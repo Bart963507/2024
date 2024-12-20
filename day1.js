@@ -45,8 +45,8 @@ const input = fetch('input.txt')
         list2.push(+splitArr[0])
         list1.push(+splitArr[1])
     })
-
-    while (list1.length > 0){
+    //Part 1
+    /*while (list1.length > 0){
         const diff = calcDiff(findMin(list1),findMin(list2))
         resultArr.push(diff)
         removeMin(list1)
@@ -57,8 +57,22 @@ const input = fetch('input.txt')
         (accumulator, currentValue) => accumulator + currentValue,
         0
       ))
+    */
 
+    //Part 2
 
+    list1.forEach(n => {
+      const count = list2.filter(n2 => n2 === n).length
+      if (count > 0){
+      resultArr.push(count*n)
+      console.log(n,count)
+      }
+      
+    })
+    console.log(resultArr.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    ))
   })
   .catch(error => {
     console.error('Error reading file:', error);
