@@ -13,19 +13,19 @@ const input = fetch('input.txt')
         const positiveArr = []
         const diffArr = []
        for (const [i, n] of splitArr.entries()){
-          const currentNumber = n
-          const nextNumber = splitArr[i + 2]
+          const currentNumber = splitArr[i]
+          const nextNumber = splitArr[i + 1]
           if (nextNumber != undefined){
           // Make new array of differences
           const diff = Math.abs(currentNumber - nextNumber)
           if (diff>0){diffArr.push(diff)}
-
           const positive = checkPositive(currentNumber, nextNumber)
           if (positive != null){positiveArr.push(positive)}
        }}
        
-       checkEquality(positiveArr)
-       console.log(diffArr)
+       //console.log(positiveArr)
+        checkEquality(positiveArr)
+       //console.log(diffArr)
 
        const unEvenArr = []
        for (const[i,diff] of diffArr.entries()){
@@ -33,7 +33,7 @@ const input = fetch('input.txt')
             unEvenArr.push(checkUnEven(diff, diffArr[i + 1]))
           }
        }
-       console.log(unEvenArr)
+       //console.log(unEvenArr)
     })
   })
 
@@ -56,10 +56,11 @@ const input = fetch('input.txt')
 
   function checkEquality(arr){
     const equalSet = new Set(arr)
+    console.log(equalSet.size)
     if (equalSet.size === 1){
       return true
     }
-    else{
+    else {
       return false
     }
   }
