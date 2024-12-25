@@ -7,22 +7,17 @@ const input = fetch("input.txt")
   })
   .then((data) => {
     const splitData = data.toString().split("\r\n");
-    splitData.forEach((d) => {
-      const splitArr = d.split(" ").join(",").split("\n").join(",").split(",");
+    const inputsArr = JSON.parse(JSON.stringify(splitData))[0].split("\n");
+    const validDiffsArr = [];
+    inputsArr.forEach((d) => {
+      const splitArr = d.split(" ");
       // RULE 1:
       // The levels are either all increasing or all decreasing.
       const positiveArr = [];
-      const diffArr = [];
-      console.log(splitArr);
       for (const [i, n] of splitArr.entries()) {
         const currentNumber = splitArr[i];
         const nextNumber = splitArr[i + 1];
         if (nextNumber != undefined) {
-          // Make new array of differences
-          const diff = Math.abs(currentNumber - nextNumber);
-          if (diff > 0) {
-            diffArr.push(diff);
-          }
           //Push positive, negative to new array
           const positive = checkPositive(currentNumber, nextNumber);
           if (positive != null) {
@@ -31,19 +26,31 @@ const input = fetch("input.txt")
         }
       }
       //Create set of array. If set size is 1, then it is all either increasing or decreasing
-      console.log(checkEquality(positiveArr));
+      checkEquality(positiveArr);
 
       //RULE 2
       //Any two adjacent levels differ by at least one and at most three.
-      const unEvenArr = [];
-      for (const [i, diff] of diffArr.entries()) {
-        if (i + 1 != undefined) {
-          unEvenArr.push(checkUnEven(diff, diffArr[i + 1]));
+
+      // Make new array of differences
+      const diffArr = [];
+
+      //console.log(splitArr);
+      for (const [i, n] of splitArr.entries()) {
+        const currentNumber = splitArr[i];
+        const nextNumber = splitArr[i + 1];
+        if (nextNumber != undefined) {
+          const diff = Math.abs(currentNumber - nextNumber);
+          diffArr.push(diff);
         }
       }
+      const nTooBig = diffArr.findIndex((n) => n > 3);
+      const zero = diffArr.indexOf(0);
+      if (zero === -1 && nTooBig === -1) {
+        validDiffsArr.push(diffArr);
+      }
     });
+    console.log(validDiffsArr);
   });
-
 // check positive/negative
 function checkPositive(number1, number2) {
   const diff = number1 - number2;
@@ -71,4 +78,8 @@ function checkUnEven(number1, number2) {
   } else {
     return true;
   }
+}
+
+function calcDiff(number1, number2) {
+  Math.abs(w);
 }
