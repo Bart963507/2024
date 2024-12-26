@@ -9,6 +9,7 @@ const input = fetch("input.txt")
     const splitData = data.toString().split("\r\n");
     const inputsArr = JSON.parse(JSON.stringify(splitData))[0].split("\n");
     const validDiffsArr = [];
+    finalEqualArr = [];
     inputsArr.forEach((d) => {
       const splitArr = d.split(" ");
       // RULE 1:
@@ -25,8 +26,8 @@ const input = fetch("input.txt")
           }
         }
       }
-      //Create set of array. If set size is 1, then it is all either increasing or decreasing
-      checkEquality(positiveArr);
+      //Create set of array. If set size is 1, then it is all either increasing or decreasing and set it as a property in the final array
+      finalEqualArr.push(checkEquality(positiveArr));
 
       //RULE 2
       //Any two adjacent levels differ by at least one and at most three.
@@ -43,14 +44,27 @@ const input = fetch("input.txt")
           diffArr.push(diff);
         }
       }
+
       const nTooBig = diffArr.findIndex((n) => n > 3);
       const zero = diffArr.indexOf(0);
       if (zero === -1 && nTooBig === -1) {
-        validDiffsArr.push(diffArr);
+        validDiffsArr.push(true);
+      } else {
+        validDiffsArr.push(false);
       }
     });
     console.log(validDiffsArr);
+    console.log(finalEqualArr);
+
+    // Join the two final arrs into one
+    const combined = finalEqualArr.map(function (item, index) {
+      return { equal: item, diff: validDiffsArr[index] };
+    });
+    console.log(combined);
+    const answer = combined.filter((i) => i.equal && i.diff).length;
+    console.log(answer);
   });
+
 // check positive/negative
 function checkPositive(number1, number2) {
   const diff = number1 - number2;
